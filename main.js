@@ -50,13 +50,11 @@ const github = require('@actions/github');
       ...common,
       tag_sha: tagSha
     });
-    console.log(tag);
 
     const {data: commit} = await octokit.request('GET /repos/{owner}/{repo}/git/commits/{commit_sha}', {
       ...common,
       commit_sha: tag.object.sha
     });
-    console.log(commit);
 
     return {
       tag_name: tag.tag,
