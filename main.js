@@ -1,14 +1,14 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 
-const deleteTag = async (common, tagName) => {
+const deleteTag = async (octokit, common, tagName) => {
   return await octokit.request('DELETE /repos/{owner}/{repo}/git/refs/tags/{tagName}', {
     ...common,
     tagName: tagName,
   });
 }
 
-const deleteRelease = async (common, releaseId) => {
+const deleteRelease = async (octokit, common, releaseId) => {
   return await octokit.request('DELETE /repos/{owner}/{repo}/releases/{releaseId}', {
     ...common,
     releaseId: releaseId,
@@ -56,8 +56,8 @@ const deleteRelease = async (common, releaseId) => {
     console.log("RELEASES TO DELETE: ");
     console.log(releasesToDelete);
     releasesToDelete.forEach(({ release_id, tag_name }) => {
-      deleteRelease(common, release_id);
-      deleteTag(common, tag_name);
+      deleteRelease(octokit, common, release_id);
+      deleteTag(octokit, common, tag_name);
     })
 
     const { data: tagRefs } = await octokit.request('GET /repos/{owner}/{repo}/git/refs/tags', {
@@ -92,7 +92,7 @@ const deleteRelease = async (common, releaseId) => {
     console.log("TAGS TO DELETE: ");
     console.log(tagToDelete);
     tagsToDelete.forEach(({ tag_name }) => {
-      deleteTag(common, tag_name);
+      deleteTag(octokit, common, tag_name);
     })
   } catch (error) {
     console.error(error.message);
