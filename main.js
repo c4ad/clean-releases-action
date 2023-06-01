@@ -3,7 +3,7 @@ const github = require('@actions/github');
 
 (async () => {
   const GITHUB_TOKEN = core.getInput("token");
-  const maxAge = core.getInput("token");
+  const maxAge = core.getInput("age");
 
   const octokit = github.getOctokit(GITHUB_TOKEN);
 
@@ -29,6 +29,7 @@ const github = require('@actions/github');
   const releasesToDelete = releases.filter((release) => {
     const releaseDate = new Date(Date.parse(release.created_at));
     releaseDate.setMonth(releaseDate.getMonth() - 12);
+    console.log(releaseDate);
     console.log(releaseDate);
 
     return releaseDate < oldestDate;
