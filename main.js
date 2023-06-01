@@ -44,7 +44,7 @@ const github = require('@actions/github');
     ...common
   });
 
-  const tagToDelete = await Promise.all(tagRefs.map(async (tagRef) => {
+  const tagToDelete = (await Promise.all(tagRefs.map(async (tagRef) => {
     const tagSha = tagRef.object.sha;
     const {data: tag} = await octokit.request('GET /repos/{owner}/{repo}/git/tags/{tag_sha}', {
       ...common,
@@ -60,7 +60,7 @@ const github = require('@actions/github');
       tag_name: tag.tag,
       commit_date: commit.author.date,
     };
-  })).filter(({commit_date}) => {
+  }))).filter(({commit_date}) => {
     const tagDate = new Date(Date.parse(commit_date));
     tagDate.setMonth(tagDate.getMonth() - 12);
 
