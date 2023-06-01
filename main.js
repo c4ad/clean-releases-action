@@ -40,7 +40,7 @@ const github = require('@actions/github');
   console.log(releasesToDelete);
   // DELETE RELEASES
 
-  const {data: tags} = await octokit.request('GET /repos/{owner}/{repo}/git/tags', {
+  const {data: tags} = await octokit.request('GET /repos/{owner}/{repo}/git/refs/tags', {
     ...common
   });
 
