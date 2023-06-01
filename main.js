@@ -90,7 +90,7 @@ const deleteRelease = async (octokit, common, releaseId) => {
     }).map((({ tag_name }) => ({ tag_name })));
 
     console.log("TAGS TO DELETE: ");
-    console.log(tagToDelete);
+    console.log(tagsToDelete);
     tagsToDelete.forEach(({ tag_name }) => {
       deleteTag(octokit, common, tag_name);
     })
