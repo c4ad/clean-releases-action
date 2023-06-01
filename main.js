@@ -6,8 +6,8 @@ const github = require('@actions/github');
   const octokit = github.getOctokit(GITHUB_TOKEN);
 
   console.log(github.context);
-  const owner = github.context.payload.repository.owner?.login || "ofrank123";
-  const repo = github.context.payload.repository.name;
+  const owner = github.context.payload.repository?.owner.login || "ofrank123";
+  const repo = github.context.payload.repository?.name || "action-test";
 
 
   const { data: pullRequest } = await octokit.rest.pulls.get({
