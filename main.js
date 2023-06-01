@@ -28,6 +28,7 @@ const github = require('@actions/github');
   oldestDate.setMonth(oldestDate.getMonth() - maxAge);
   const releasesToDelete = releases.filter((release) => {
     const releaseDate = new Date(Date.parse(release.created_at));
+    releaseDate.setMonth(releaseDate.getMonth - 12);
 
     return releaseDate < oldestDate;
   });
