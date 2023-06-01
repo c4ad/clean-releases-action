@@ -21,8 +21,8 @@ const deleteRelease = async (octokit, common, releaseId) => {
 
   const octokit = github.getOctokit(GITHUB_TOKEN);
 
-  const owner = github.context.payload.repository?.owner.login || "ofrank123";
-  const repo = github.context.payload.repository?.name || "action-test";
+  const owner = github.context.payload.repository.owner.login;
+  const repo = github.context.payload.repository.name;
 
   const common = {
     owner,
@@ -41,9 +41,6 @@ const deleteRelease = async (octokit, common, releaseId) => {
     oldestDate.setMonth(oldestDate.getMonth() - maxAge);
     const releasesToDelete = releases.filter((release) => {
       const releaseDate = new Date(Date.parse(release.created_at));
-      if (release.name === "v1.0") {
-        releaseDate.setMonth(releaseDate.getMonth() - 12);
-      }
 
       return releaseDate < oldestDate;
     }).map((release) => {
@@ -82,9 +79,6 @@ const deleteRelease = async (octokit, common, releaseId) => {
       };
     }))).filter(({ tag_name, commit_date }) => {
       const tagDate = new Date(Date.parse(commit_date));
-      if (tag_name === "v1.1") {
-        tagDate.setMonth(tagDate.getMonth() - 12);
-      }
 
       return tagDate < oldestDate;
     }).map((({ tag_name }) => ({ tag_name })));
