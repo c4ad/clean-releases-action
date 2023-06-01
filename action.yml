@@ -5,6 +5,10 @@ inputs:
     description: 'github token from secret'
     required: true
     default: ''
+  age:
+    description: 'Maximum age of tags and releases (in months)'
+    required: true
+    default: 6
 runs:
   using: 'node16'
   main: 'main.js'
