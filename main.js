@@ -5,7 +5,7 @@ const github = require('@actions/github');
   const GITHUB_TOKEN = core.getInput("token");
   const octokit = github.getOctokit(GITHUB_TOKEN);
 
-  const owner = github.context.payload.repository.owner.login;
+  const owner = github.context.payload.repository.owner.login || "ofrank123";
   const repo = github.context.payload.repository.name;
 
 
