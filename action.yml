@@ -1,0 +1,10 @@
+name: 'Clean Old Releases'
+description: 'Cleans old tags and releases'
+inputs:
+  token:
+    description: 'github token from secret'
+    required: true
+    default: ''
+runs:
+  using: 'node12'
+  main: 'main.js'
