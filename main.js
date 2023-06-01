@@ -9,12 +9,18 @@ const github = require('@actions/github');
   const owner = github.context.payload.repository?.owner.login || "ofrank123";
   const repo = github.context.payload.repository?.name || "action-test";
 
-
-  const { data: pullRequest } = await octokit.rest.pulls.get({
+  const common = {
     owner,
     repo,
-    pull_number: 1,
-  });
+    headers: {
+      'X-GitHub-Api-Version': '2022-11-28'
+    }
+  }
 
-  console.log(pullRequest);
+  const {data: releases} = await octokit.request('GET /repos/{owner}/{repo}/releases', {
+    ...common
+  })
+
+
+  console.log(releases);
 })();
