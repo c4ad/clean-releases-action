@@ -20,9 +20,7 @@ const github = require('@actions/github');
 
   const {data: releases} = await octokit.request('GET /repos/{owner}/{repo}/releases', {
     ...common
-  })
-
-  console.log(releases);
+  });
 
   const oldestDate = new Date();
   oldestDate.setMonth(oldestDate.getMonth() - maxAge);
@@ -32,9 +30,19 @@ const github = require('@actions/github');
 
     return releaseDate < oldestDate;
   }).map((release) => {
-    return release.id
+    return {
+      release_id: release.id,
+      tag_name: release.tag_name
+    }
   });
 
-  console.log("TO DELETE: ");
+  console.log("RELEASES TO DELETE: ");
   console.log(releasesToDelete);
+  // DELETE RELEASES
+
+  const {data: tags} = await octokit.request('GET /repos/{owner}/{repo}/git/tags', {
+    ...common
+  });
+
+  console.log(tags);
 })();
