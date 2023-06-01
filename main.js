@@ -44,7 +44,7 @@ const github = require('@actions/github');
     ...common
   });
 
-  const tags = await tagRefs.map(async (tagRef) => {
+  const tags = await Promise.all(tagRefs.map(async (tagRef) => {
     const tagSha = tagRef.object.sha;
     const {data: tag} = await octokit.request('GET /repos/{owner}/{repo}/git/tags/{tag_sha}', {
       ...common,
@@ -62,7 +62,7 @@ const github = require('@actions/github');
       tag_name: tag.tag,
       commit_date: commit.author.date,
     };
-  });
+  }));
 
   console.log(tags);
 })();
