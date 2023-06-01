@@ -3,9 +3,10 @@ const github = require('@actions/github');
 
 (async () => {
   const GITHUB_TOKEN = core.getInput("token");
+  const maxAge = core.getInput("token");
+
   const octokit = github.getOctokit(GITHUB_TOKEN);
 
-  console.log(github.context);
   const owner = github.context.payload.repository?.owner.login || "ofrank123";
   const repo = github.context.payload.repository?.name || "action-test";
 
@@ -21,6 +22,12 @@ const github = require('@actions/github');
     ...common
   })
 
-
   console.log(releases);
+
+  const releasesToDelete = releases.filter((release) => {
+    const releaseData = Date.parse(release.created_at);
+    console.log(releaseData);
+
+    return true;
+  })
 })();
