@@ -31,6 +31,8 @@ const github = require('@actions/github');
     // releaseDate.setMonth(releaseDate.getMonth() - 12);
 
     return releaseDate < oldestDate;
+  }).map((release) => {
+    return release.id
   });
 
   console.log("TO DELETE: ");
