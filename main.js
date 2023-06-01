@@ -44,5 +44,18 @@ const github = require('@actions/github');
     ...common
   });
 
-  console.log(tags);
+  const tagCommits = tags.map(async (tag) => {
+    const commitSha = tag.object.sha;
+    const {data: commit} = await octokit.request('GET /repos/{owner}/{repo}/git/commits/{commit_sha}', {
+      ...common,
+      commit_sha: commitSha
+    });
+
+    return {
+      tag_name: tag.ref.split('/')[2],
+      commit_date: commit.author.date,
+    };
+  });
+
+  console.log(tagCommits);
 })();
