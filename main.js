@@ -40,22 +40,29 @@ const github = require('@actions/github');
   console.log(releasesToDelete);
   // DELETE RELEASES
 
-  const {data: tags} = await octokit.request('GET /repos/{owner}/{repo}/git/refs/tags', {
+  const {data: tagRefs} = await octokit.request('GET /repos/{owner}/{repo}/git/refs/tags', {
     ...common
   });
 
-  const tagCommits = tags.map(async (tag) => {
-    const commitSha = tag.object.sha;
+  const tags = tagRefs.map(async (tagRef) => {
+    const tagSha = tagRef.object.sha;
+    const {data: tag} = await octokit.request('GET /repos/{owner}/{repo}/git/tags/{tag_sha}', {
+      ...common,
+      tag_sha: tagSha
+    });
+    console.log(tag);
+
     const {data: commit} = await octokit.request('GET /repos/{owner}/{repo}/git/commits/{commit_sha}', {
       ...common,
-      commit_sha: commitSha
+      commit_sha: tag.object.sha
     });
+    console.log(commit);
 
     return {
-      tag_name: tag.ref.split('/')[2],
+      tag_name: tag.tag,
       commit_date: commit.author.date,
     };
   });
 
-  console.log(tagCommits);
+  console.log(tags);
 })();
